@@ -1,15 +1,20 @@
 import { faker } from '@faker-js/faker';
 import RestartButton from './components/restartbutton';
 import Results from './components/Results';
+import UserTyping from './components/UserTyping';
 
 
 const App = ()  =>  {
+  const fakeCode = generateFakeCode();
   return (
     <>
       <CountdownTimer timeLeft={30} />
-      <FakeCode generateFakeCode={generateFakeCode()}/>;  
+      <WordsContainer>
+        <FakeCode generateFakeCode={fakeCode} />
+        <UserTyping className="absolute inset-0" userInput={fakeCode} /> 
+      </WordsContainer>
       <RestartButton 
-        className="flex items-center justify-center mx-auto mt-10 text-slate-500"     
+        className=" mx-auto mt-10 text-slate-500"     
         onRestart={() => null}  
         />
         <Results
@@ -21,11 +26,15 @@ const App = ()  =>  {
     </>
   );
 };
-
-
-const FakeCode = ({generateFakeCode}:{generateFakeCode: string}) => {
-  return <div  className='text-4xl text-center text-slate-500' >{generateFakeCode}</div>
+const WordsContainer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="relative max-w-xl mt-3 text-3xl leading-relaxed break-all">{children}</div>
+  );
 }
+const FakeCode = ({generateFakeCode}:{generateFakeCode: string}) => {
+  return <div  className=' text-slate-500' >{generateFakeCode}</div>
+}
+
 const CountdownTimer = ({timeLeft}:{timeLeft: number}) => {
   return <h2  className='text-primary-400 font-medium' >Time: {timeLeft}</h2>
 }
