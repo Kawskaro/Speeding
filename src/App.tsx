@@ -2,16 +2,18 @@ import { faker } from '@faker-js/faker';
 import RestartButton from './components/restartbutton';
 import Results from './components/Results';
 import UserTyping from './components/UserTyping';
+import useEngine from './hooks/useEngine';
 
 
 const App = ()  =>  {
-  const fakeCode = generateFakeCode();
+  const generatedFakeCode = generateFakeCode();
+  const { state, fakeCode, timeLeft, typed } = useEngine();
   return (
     <>
-      <CountdownTimer timeLeft={30} />
+      <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
-        <FakeCode generateFakeCode={fakeCode} />
-        <UserTyping className="absolute inset-0" userInput={fakeCode} /> 
+        <FakeCode generateFakeCode={generatedFakeCode} />
+        <UserTyping className="absolute inset-0" userInput={typed} /> 
       </WordsContainer>
       <RestartButton 
         className=" mx-auto mt-10 text-slate-500"     
