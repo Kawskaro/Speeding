@@ -1,19 +1,26 @@
+import { useState, useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 import RestartButton from './components/restartbutton';
 import Results from './components/Results';
 import UserTyping from './components/UserTyping';
 import useEngine from './hooks/useEngine';
 
-
 const App = ()  =>  {
-  const generatedFakeCode = generateFakeCode();
   const { state, fakeCode, timeLeft, typed } = useEngine();
+  const [generatedFakeCode, setGeneratedFakeCode] = useState("");
+  useEffect(() => {
+    setGeneratedFakeCode(generateFakeCode());
+  }, []);
+
   return (
     <>
       <CountdownTimer timeLeft={timeLeft} />
       <WordsContainer>
         <FakeCode generateFakeCode={generatedFakeCode} />
-        <UserTyping className="absolute inset-0" userInput={typed} /> 
+        <UserTyping 
+          className="absolute inset-0" 
+          generateFakeCode={generatedFakeCode}
+          userInput={typed} /> 
       </WordsContainer>
       <RestartButton 
         className=" mx-auto mt-10 text-slate-500"     
@@ -49,7 +56,7 @@ function generateFakeCode() {
   const method = faker.random.word();
   const condition = faker.random.word();
   const loopVariable = faker.random.word();
-  const stringValue = faker.random.words(5);
+  const stringValue = faker.random.words(5).split(/\s+/).join(' ');
   return `function ${functionName}(${variableName1}, ${variableName2}) {
     const ${variableName1} = "${stringValue}";
     let ${variableName3} = ${variableName1}.${method}(${variableName2});

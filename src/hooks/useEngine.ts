@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useWords from './useWords';
 import useCountDownTimer from './useCountDownTimer';
 import useTyping from './useTyping';
+import { countErrors } from '../utils/helpers';
 
 export type State = "start" | "run" | "finish"; 
 
@@ -14,6 +15,12 @@ const useEngine = () => {
     const { timeLeft, startCountDown, resetCountDown } = useCountDownTimer(COUNTDOWN_SECONDS);
         useCountDownTimer(COUNTDOWN_SECONDS); 
         const { typed, cursor , clearTyped, resetTotalTyped, totalTyped } = useTyping(state !== "finish");
+        const [errors, setErrors] = useState(0);
+        const sumErrors = useCallback(() => {
+            const wordsReached = fakeCode.substring(0, cursor);
+            setErrors((prevErrors) => prevErrors = countErrors(typed, wordsReached));
+        },[typed, fakeCode, cursor]);
+        
     return { state, fakeCode , timeLeft , typed};
 };
 

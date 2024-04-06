@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useState, useRef } from "react"
 
 const isKeyboardCodeAlowed = (code: string) => {
-    return code.startsWith("Key") || code.startsWith("Digit") || code === "Backspace" || code ==="Space";
-
+    const allowedKeys = [
+        "Key", "Digit", "Backspace", "Space", 
+        "BracketLeft", "BracketRight", "ParenLeft", "ParenRight",
+        "Semicolon", "Equal", "Comma", "Minus", "Period", "Slash", "Backquote",
+        "IntlBackslash", "Quote", "Backslash"
+    ];
+    return allowedKeys.some(key => code.startsWith(key));
 }
 
 const useTyping = (enabled: boolean) => {
@@ -26,7 +31,7 @@ const useTyping = (enabled: boolean) => {
                 totalTyped.current += 1;
         }
     },
-     [cursor, enabled]
+    [cursor, enabled]
     );
 
     const clearTyped = useCallback(() => {
